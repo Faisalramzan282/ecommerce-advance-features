@@ -1,0 +1,5 @@
+/front-end/node_modules/
+/back-end/node_project/config.js
+/back-end/node_project/node_modules/
+/front-end/package-lock.json
+/back-end/package-lock.json
