@@ -10,8 +10,9 @@ const initialState: UserRegistrationState = {
 };
 export const registerUser = createAsyncThunk(
   'userRegistration/registerUser',
-  async (payload: { email: string; password: string }, { dispatch }) => {
+  async (payload: { email: string; password: string, username:string }, { dispatch }) => {
     try {
+      console.log("uuuuu====>", payload);
       const { data } = await axios.post('http://localhost:3060/user/register', payload);
       if (data.status === 200){
         dispatch(registrationSuccess(data.message));

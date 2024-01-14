@@ -1,6 +1,4 @@
 const { DataTypes, Sequelize } = require('sequelize');
-const bcrypt = require('bcrypt');
-// const config = require('../config/config');
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define('User', {
     user_id: {
@@ -43,10 +41,6 @@ module.exports = (sequelize, Sequelize) => {
   }, {
   freezeTableName: true, 
   });
-  // User.associate = (models) => {
-  //   // User.hasMany(models.Order, { foreignKey: 'user_id' });
-  //   // User.hasMany(models.Review, { as: 'Reviews', foreignKey: 'user_id' });
-  //   User.hasMany(models.Product, { as: 'addProducts', foreignKey: 'user_id' });
-  // };
+ 
   return User;
 };

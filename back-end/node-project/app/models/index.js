@@ -15,24 +15,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.User = require("./user.js")(sequelize, Sequelize);
-// db.Order = require("./order.js")(sequelize, Sequelize);
-// db.Review = require("./review.js")(sequelize, Sequelize);
-// db.Product = require("./product.js")(sequelize, Sequelize);
-// db.OrderItem = require("./orderItem.js")(sequelize, Sequelize);
-//user associations
-// db.User.hasMany(db.Order, { foreignKey: 'user_id' });
-// db.User.hasMany(db.Review, { as: 'Reviews', foreignKey: 'user_id' });
-// db.User.hasMany(db.Product, { as: 'addProducts', foreignKey: 'user_id' });
-    //order associations
-// db.Order.belongsTo(db.User, { foreignKey: 'user_id' });
-// db.Order.hasMany(db.OrderItem, { foreignKey: 'order_id' });
-     //review associations
-// db.Review.belongsTo(db.User, { foreignKey: 'user_id' });
-// db.Review.belongsTo(db.Product, { foreignKey: 'product_id' });
-// db.Product.hasMany(db.Review, { foreignKey: 'product_id' });
-// db.Product.hasMany(db.OrderItem, { foreignKey: 'product_id' });
-// db.Product.belongsTo(db.User, { foreignKey: 'user_id' });
-// db.OrderItem.belongsTo(d{"message":"b.Order, { foreignKey: 'order_id' });
-// db.OrderItem.belongsTo(db.Product, { foreignKey: 'product_id' });
-
+db.StoreSetup = require("./store-setup.js")(sequelize, Sequelize);
+db.Product = require("./product.js")(sequelize, Sequelize);
+db.ProductImage = require("./productImage.js")(sequelize, Sequelize);
+db.User.hasOne(db.StoreSetup, { foreignKey: "seller_id" });
+db.StoreSetup.belongsTo(db.User, { foreignKey: "seller_id" });
+db.User.hasMany(db.Product, {foreignKey:"seller_id"} );
+db.Product.belongsTo(db.User,{foreignKey:"seller_id"} );
+db.Product.hasMany(db.ProductImage, { foreignKey: 'productId' , onDelete: 'CASCADE'});
+db.ProductImage.belongsTo(db.Product, { foreignKey: 'productId', onDelete: 'CASCADE' });
 module.exports = db;

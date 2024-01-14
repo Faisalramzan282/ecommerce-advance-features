@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const config = require("../config/config");
 const jwt = require("jsonwebtoken");
 const authenticateSeller = async (req, res, next) => {
-  console.log("req.body is ->", req.body);
   try {
     if (!req.body) {
       return res.status(400).send({
@@ -26,7 +25,7 @@ const authenticateSeller = async (req, res, next) => {
       const passwordMatch = await bcrypt.compare(password, viewUser.password);
       if(passwordMatch)
       {
-        await User.update({ role: 'user' }, { where: { user_id: viewUser.user_id } });
+        await User.update({ role: 'seller' }, { where: { user_id: viewUser.user_id } });
         const token =  jwt.sign(
                       {
                         user_id: viewUser.user_id,

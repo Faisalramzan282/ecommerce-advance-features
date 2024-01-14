@@ -17,5 +17,7 @@ module.exports = ({
     idle: 10000
   },
   JWT_SECRET_KEY:'8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb',
-  saltRounds : 12
+  saltRounds : 12,
+  projectId : 'reservation-location',
+  bucketName: 'e-commerce-advance-features'
 });

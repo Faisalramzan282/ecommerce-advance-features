@@ -1,66 +1,75 @@
 const { DataTypes } = require('sequelize');
-const Review = require('./review');
-const User = require('./user');
 module.exports = (sequelize, Sequelize) => {
   const Product = sequelize.define('Product', {
     product_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
+      defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
       allowNull: false,
       unique: true,
     },
-    name: {
+    productName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
+    productDescription: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: false, 
     },
-    specification: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false, 
     },
     price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    category: {
-      type: DataTypes.ENUM(
-        'Electronics',
-        'ApparelAndFashion',
-        'HomeAndLiving',
-        'BeautyAndPersonalCare',
-        'SportsAndOutdoors',
-        'BooksAndMedia',
-        'HealthAndWellness'
-      ),
-      allowNull: false,
-    },
-    stock: {
+    quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    imageUrls: {
-      type: DataTypes.JSON,
+    weight: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
+    weightUnit: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    length: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+    },
+    lengthUnit: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    height: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+    },
+    heightUnit: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    width: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+    },
+    widthUnit: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    isProductPhysical: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false, 
+      defaultValue: false, 
+    },
+    
   }, {
     freezeTableName: true,
+    
   });
-  Product.beforeCreate((product) => {
-    product.product_id = generateUniqueId();
-  });
-  Product.associate=(models)=>{
-    // Product.hasMany(models.Review, { foreignKey: 'product_id' });
-    // Product.hasMany(models.OrderItem, { foreignKey: 'product_id' });
-    Product.belongsTo(models.User, { foreignKey: 'user_id' });
-  }
-  function generateUniqueId() {
-    const currentDate = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const timestamp = new Date().getTime().toString();
-    const randomComponent = Math.random().toString(36).slice(2, 10);
-    return currentDate + '-' + timestamp + '-' + randomComponent;
-  }
+ 
   return Product;
 };

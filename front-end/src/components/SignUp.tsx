@@ -11,6 +11,7 @@ import userRegistration, { registerUser, resetStatus } from '../GlobalRedux/Feat
 import { resetError } from '../GlobalRedux/Features/userRegistration/userRegistration';
 const SignUp: React.FC = () => {
     const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [displayedErrors, setDisplayedErrors] = useState<string[]>([]);
     const router = useRouter();
@@ -18,6 +19,9 @@ const SignUp: React.FC = () => {
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     };
+    const handleUsernameChnage = (event: React.ChangeEvent<HTMLInputElement>)=>{
+        setUsername(event.target.value);
+    }
     const {  errors } = useSelector((state: RootState) => state.userRegistration);
     let status = useSelector((state:RootState)=>state.userRegistration.status);
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +43,7 @@ const SignUp: React.FC = () => {
     }
     }, [status, router, dispatch]);
     const signUpBtn = () => {
-        dispatch(registerUser({ email, password }));
+        dispatch(registerUser({ email, password, username }));
     };
     const handleLoginClick = ()=>{
         router.push('/login')
@@ -52,6 +56,15 @@ const SignUp: React.FC = () => {
                     {displayedErrors.map((error, index) => (
                         <p key={index}>{error}</p>
                     ))}
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Username:</label>
+                    <input
+                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 focus:border-2"
+                        type="text"
+                        value={username}
+                        onChange={handleUsernameChnage}
+                    />
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Email:</label>

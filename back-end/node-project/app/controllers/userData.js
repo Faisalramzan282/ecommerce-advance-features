@@ -3,9 +3,9 @@ const { sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 exports.registerUser = async (req, res) => {
   try {
-    if(req.body.email== '' && req.body.password == ''){
+    if(req.body.email == '' && req.body.password == '' && req.body.username){
      return res.status(400).send({
-      message:"email or password can not be empty"
+      message:"email or password or username can not be empty"
      })
     }
     if (!req.body) {
@@ -23,14 +23,24 @@ exports.registerUser = async (req, res) => {
         message: "Password must start with an uppercase letter and be at least 8 characters long"
       });
     }
-    if (req.body.username && !isValidUsername(req.body.username)) {
+    if (!isValidUsername(req.body.username)) {
       return res.status(400).send({
-        message: "Username must contain lowercase letters and numbers only"
+        message: "Username must contain atleast one lowercase and one numeric"
       });
+    }
+    if(req.body.username){
+      const userNameExisted = await db.User.findOne( {
+        where: {username: req.body.username}
+      })
+      if(userNameExisted){
+        return res.status(400).send({
+          message:"username already existed"
+        })
+      }
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
     const createdUser = await db.User.create(
-      { email: req.body.email, password: hashedPassword, role: 'user' });
+      { email: req.body.email, password: hashedPassword, username:req.body.username, role: 'user' });
     res.status(200).json({ status: 200, message: "User created successfully", data: createdUser });
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
@@ -66,6 +76,6 @@ function isValidPassword(password) {
   return passwordRegex.test(password);
 }
 function isValidUsername(username) {
-  const usernameRegex = /^[a-z0-9]+$/;
+  const usernameRegex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]+$/;
   return usernameRegex.test(username);
 }

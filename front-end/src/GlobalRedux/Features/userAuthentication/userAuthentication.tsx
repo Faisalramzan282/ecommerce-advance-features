@@ -12,10 +12,12 @@ export const userAuth = createAsyncThunk(
   async (payload: { email: string; password: string; seller: boolean }, { dispatch }) => {
     try {
       const { data } = await axios.post('http://localhost:3060/user/authenticate', payload);
-      // const token = localStorage.setItem('sellerToken', data.token);
-      console.log('response is ==>', data);
+      const {token} = data;
+      const seller_id = data.user.user_id;
       if(data.status === 200)
       {
+        localStorage.setItem("token",token );
+        localStorage.setItem("seller_id", seller_id);
       dispatch(authSuccess(data));
       }
     } catch (error:any) {

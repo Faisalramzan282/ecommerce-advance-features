@@ -1,5 +1,6 @@
 const express = require('express');
 const userRoutes = require('./app/routes/userRoutes');
+const sellerRoute = require('./app/routes/sellerRoutes');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Ecommerce Application!" });
 });
 app.use('/user', userRoutes); //route will be user/register
+app.use('/seller', sellerRoute); //seller-route
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
